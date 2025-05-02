@@ -2,13 +2,15 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root' // ✅ Must be present
+})
 export class AuthService {
   constructor(private http: HttpClient) {}
 
-  login(credentials: { email: string, password: string }): Observable<any> {
+  login(credentials: { email: string; password: string }): Observable<any> {
     return this.http.post('http://localhost:3000/login', credentials, {
-      withCredentials: true // 👈 Important for cookies
+      withCredentials: true,
     });
   }
 }
