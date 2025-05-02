@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-etudiants-form',
+  selector: 'app-examens-form',
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.css']
 })
@@ -11,6 +11,6 @@ export class FormComponent {
   };
 
   submitForm() {
-    console.log('Formulaire soumis pour etudiants :', this.model);
+    console.log('Formulaire soumis pour examens :', this.model);
   }
 }

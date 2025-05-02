@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { EtudiantsRoutingModule } from './etudiants-routing.module';
+import { ExamensRoutingModule } from './examens-routing.module';
 import { ListComponent } from './list/list.component';
 import { FormComponent } from './form/form.component';
 
@@ -8,7 +8,7 @@ import { FormComponent } from './form/form.component';
   declarations: [ListComponent, FormComponent],
   imports: [
     CommonModule,
-    EtudiantsRoutingModule
+    ExamensRoutingModule
   ]
 })
-export class EtudiantsModule {}
+export class ExamensModule {}
