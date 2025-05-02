@@ -16,26 +16,27 @@ Content-Type: application/json
 {
   "name": "John Doe",
   "email": "j@d.com",
-  "password": "12Az!3456"
+  "password": "12Az!3456",
+  "role":"student"
 }
 
-### Get All Users (Requires Auth)
+### Get All Users
 GET http://localhost:3000/users
-Authorization: Bearer <token>
 
 ### Get One User
-GET http://localhost:3000/user/3
-Authorization: Bearer <token>
+GET http://localhost:3000/user/6814b95e45f3bf099329d069
 
 ### Update User
-PATCH http://localhost:3000/user/1
+PATCH http://localhost:3000/user/6814d4f3e07cb8c105e48215
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MTRkNGYzZTA3Y2I4YzEwNWU0ODIxNSIsIm5hbWUiOiJKb2huIERvZSIsInJvbGUiOiJzdHVkZW50IiwiaWF0IjoxNzQ2MTk4NjM1LCJleHAiOjE3NDYyMDIyMzV9.NuhZ3mQtCSMTFqM2s3wqkB9mFdVquHVZThc-jEd8bvU
 Content-Type: application/json
-Authorization: Bearer <token>
 
 {
-  "name": "Jane Doe"
+  "name": "Jane Doe",
+  "password": "12Az!"
 }
 
 ### Delete User
-DELETE http://localhost:3000/user/2
-Authorization: Bearer <token>
+DELETE http://localhost:3000/user/6814b95e45f3bf099329d069
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MTRiOTVlNDVmM2JmMDk5MzI5ZDA2OSIsInJvbGUiOiJzdHVkZW50IiwiaWF0IjoxNzQ2MTkyMzg1LCJleHAiOjE3NDYxOTU5ODV9.LCqdR3yMlbQfhJPOVRF4qZ5C86nJmC0p4ymDbcJMSqg
+//renvoie une erreur server mais delete bien le user 

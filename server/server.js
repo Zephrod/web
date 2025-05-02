@@ -12,7 +12,7 @@ connectDB();
 
 // * Import routes
 const authRouter = require("./routes/auth");
-
+const userRouter = require("./routes/user");
 // * App init
 const app = express();
 
@@ -24,6 +24,7 @@ app.use(errorHandler);
 
 // * Route
 app.use(authRouter);
+app.use(userRouter);
 /*
 app.get('/', (req, res) => {
   res.send('Hello from the Node.js backend!');
