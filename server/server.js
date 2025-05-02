@@ -3,23 +3,27 @@ const express = require('express');
 //const mongoose = require('mongoose'); // ! not needed here cause imported in configs/db.js 
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
-const corsOptions = require('./config/corsOptions');
+const corsOption = require('./config/corsOption');
+const errorHandler = require('./middlewares/errorHandler');
 
 // ! db synchronisation
-const connectDB = require('./configs/db');
+const connectDB = require('./config/db');
 connectDB();
 
 // * Import routes
+const authRouter = require("./routes/auth");
 
 // * App init
 const app = express();
 
 // * Middleware
 app.use(express.json());
-app.use(cors(corsOptions));
+app.use(cors(corsOption));
 app.use(cookieParser());
+app.use(errorHandler);
 
 // * Route
+app.use(authRouter);
 /*
 app.get('/', (req, res) => {
   res.send('Hello from the Node.js backend!');

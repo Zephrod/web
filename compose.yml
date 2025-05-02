@@ -5,8 +5,8 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - ./server:/server                    # Mount the backend folder
-      - /server/node_modules              # Internal node_modules
+      - ./server:/server
+      - /server/node_modules
     environment:
       - JWT_SECRET=secret
     command: sh -c "npm install && node server.js"
@@ -17,8 +17,21 @@ services:
     ports:
       - "4200:4200"
     volumes:
-      - ./client/frontend:/client               # Mount the frontend folder
-      - /client/node_modules            # Internal node_modules
+      - ./client/frontend:/client
+      - /client/node_modules
     command: sh -c "npm install -g @angular/cli && npm install && ng serve --host 0.0.0.0"
     depends_on:
       - backend
+
+  mongodb:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+    volumes:
+      - mongo-data:/data/db
+    command: --quiet
+volumes:
+  mongo-data:
