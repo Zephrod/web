@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -11,16 +12,16 @@ export class LoginComponent {
   credentials = { email: '', password: '' };
   message = '';
 
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
   login() {
     this.authService.login(this.credentials).subscribe({
-      next: (res) => {
-        this.message = 'Connexion réussie !';
-        console.log(res);
-      },
+      next: () => this.router.navigate(['/dashboard']),
       error: (err) => {
-        this.message = 'Erreur de connexion';
+        this.message = err.error?.message || 'Erreur de connexion';
         console.error(err);
       }
     });

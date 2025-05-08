@@ -3,6 +3,8 @@ const { generateToken } = require('../utils/token');
 const { setAuthCookie, clearAuthCookie } = require('../utils/cookie');
 const { findUserByEmail, createUser } = require('../utils/mongooseHelpers'); // Import helpers
 
+const User = require('../models/user');
+
 module.exports = {
   login: async (req, res, next) => {
     const { email, password } = req.body;
@@ -17,14 +19,23 @@ module.exports = {
       if (!isMatch) return res.status(401).json({ message: 'Mot de passe incorrect' });
 
       const token = generateToken({
-        id: user._id, // Changed from user.id to user._id (Mongoose uses _id)
-        name: user.name,
+        id: user._id,
         role: user.role,
       });
 
       setAuthCookie(res, token);
-      res.status(200).json({ token });
+      res.status(200).json({ 
+        message: 'Login successful',
+        user: {
+          id: user._id,
+          name: user.name,
+          email: user.email,
+          role: user.role
+        }
+      });
     } catch (err) {
+      console.error('Login error:', err);
+    res.status(500).json({ message: 'Internal server error' });
       next(err);
     }
   },
@@ -60,5 +71,29 @@ module.exports = {
   logout: async (req, res) => {
     clearAuthCookie(res);
     res.status(200).json({ message: 'Déconnexion réussie' });
+  },
+  getCurrentUser: async (req, res) => {
+    try {
+      if (!req.user?.id) {
+        console.error('No user ID in request');
+        return res.status(401).json({ message: 'Unauthorized' });
+      }
+  
+      const user = await User.findById(req.user.id).select('-password');
+      
+      if (!user) {
+        console.error('User not found for ID:', req.user.id);
+        return res.status(404).json({ message: 'User not found' });
+      }
+  
+      res.status(200).json(user);
+    } catch (error) {
+      console.error('Me endpoint error:', {
+        error: error.message,
+        stack: error.stack,
+        userId: req.user?.id
+      });
+      res.status(500).json({ message: 'Error fetching user data' });
+    }
   },
 };

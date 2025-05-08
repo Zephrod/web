@@ -1,7 +1,7 @@
 module.exports = {
     // Set JWT cookie
     setAuthCookie: (res, token) => {
-      res.cookie('authToken', token, {
+      res.cookie('jwt', token, {
         httpOnly: true,
         secure: false, // on est paas en prod on verra plus tard 
         maxAge: 3600000, // 1 heure en millisecondes
@@ -11,7 +11,7 @@ module.exports = {
   
     // Clear authentication cookie
     clearAuthCookie: (res) => {
-      res.clearCookie('authToken', {
+      res.clearCookie('jwt', {
         maxAge: 0,
         httpOnly: true,
         path: '/',

@@ -1,11 +1,22 @@
 import { Component } from '@angular/core';
+import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-main',
-  standalone: false,
+  standalone:false,
   templateUrl: './main.component.html',
-  styleUrl: './main.component.css'
+  styleUrls: ['./main.component.css']
 })
 export class MainComponent {
+  constructor(
+    public authService: AuthService,
+    private router: Router
+  ) {}
 
+  logout() {
+    this.authService.logout().subscribe(() => {
+      this.router.navigate(['/login']);
+    });
+  }
 }

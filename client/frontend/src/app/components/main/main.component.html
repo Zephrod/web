@@ -1,2 +1,48 @@
-<h1>Main Layout</h1>
-<router-outlet></router-outlet>
+<!-- Main layout -->
+<mat-toolbar color="primary">
+  <button mat-icon-button (click)="sidenav.toggle()">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <span>University Portal</span>
+  
+  <!-- User Info -->
+  <div class="user-info" *ngIf="authService.currentUser$ | async as user">
+    <span>{{ user.name }} ({{ user.role }})</span>
+    <button mat-button (click)="logout()">
+      <mat-icon>logout</mat-icon>
+      Logout
+    </button>
+  </div>
+</mat-toolbar>
+
+<mat-sidenav-container>
+  <mat-sidenav #sidenav>
+    <mat-nav-list>
+      <!-- Common Navigation -->
+      <a mat-list-item routerLink="/dashboard" routerLinkActive="active">
+        <mat-icon>home</mat-icon>
+        Home
+      </a>
+
+      <!-- Student-specific -->
+      <ng-container *ngIf="(authService.currentUser$ | async)?.role === 'student'">
+        <a mat-list-item routerLink="/dashboard/courses">
+          <mat-icon>book</mat-icon>
+          My Courses
+        </a>
+      </ng-container>
+
+      <!-- Teacher-specific -->
+      <ng-container *ngIf="(authService.currentUser$ | async)?.role === 'teacher'">
+        <a mat-list-item routerLink="/dashboard/management">
+          <mat-icon>group</mat-icon>
+          Manage Students
+        </a>
+      </ng-container>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

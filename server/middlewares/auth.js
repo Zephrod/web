@@ -1,19 +1,41 @@
 const { verifyToken } = require('../utils/token');
 
 module.exports = (req, res, next) => {
-    // Get token from cookies or Authorization header
-    const token = req.cookies?.authToken || req.headers.authorization?.split(' ')[1];
+    // Prioritize cookie-based authentication
+    const token = req.cookies?.jwt || req.headers.authorization?.split(' ')[1]?.trim();
     
     if (!token) {
-        return res.status(401).json({ message: 'Missing authentication token' });
+        return res.status(401).json({ message: 'Authentication required' });
     }
 
     try {
         const decoded = verifyToken(token);
-        req.user = decoded; // Attach user data to request
+        req.user = {
+            id: decoded.id,
+            role: decoded.role,
+        };
         next();
     } catch (err) {
-        // Handle different error types if needed
-        res.status(401).json({ message: 'Invalid token' });
+        const message = err.name === 'TokenExpiredError' 
+            ? 'Session expired' 
+            : 'Invalid authentication';
+        
+        res.status(401)
+           .clearCookie('jwt')
+           .json({ message });
     }
+};
+
+exports.adminOnly = (req, res, next) => {
+  if (req.user.role !== 'admin') {
+    return res.status(403).json({ message: 'Admin access required' });
+  }
+  next();
+};
+
+exports.professorOnly = (req, res, next) => {
+  if (req.user.role !== 'professor') {
+    return res.status(403).json({ message: 'Professor access required' });
+  }
+  next();
 };

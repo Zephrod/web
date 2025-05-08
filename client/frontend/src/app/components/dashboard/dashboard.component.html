@@ -1,1 +1,50 @@
-<p>dashboard works!</p>
+<div class="dashboard-container" *ngIf="currentUser$ | async as user">
+    <!-- Role-Based Header -->
+    <div class="role-header">
+      <h1>{{ user.role | titlecase }} Dashboard</h1>
+      <mat-chip-grid>
+        <mat-chip color="primary" selected>{{ user.email }}</mat-chip>
+      </mat-chip-grid>
+    </div>
+  
+    <!-- Quick Stats Grid -->
+    <div class="widget-grid">
+      <!-- Student Widgets -->
+      <mat-card *ngIf="user.role === 'student'" class="widget-card">
+        <mat-card-header>
+          <mat-card-title>My Courses</mat-card-title>
+          <mat-icon>school</mat-icon>
+        </mat-card-header>
+        <mat-card-content>
+          <p>Enrolled in 3 active courses</p>
+          <button mat-raised-button color="accent">View Schedule</button>
+        </mat-card-content>
+      </mat-card>
+  
+      <!-- Teacher Widgets -->
+      <mat-card *ngIf="user.role === 'teacher'" class="widget-card">
+        <mat-card-header>
+          <mat-card-title>Class Management</mat-card-title>
+          <mat-icon>groups</mat-icon>
+        </mat-card-header>
+        <mat-card-content>
+          <p>42 students in 5 classes</p>
+          <button mat-raised-button color="accent">Manage Roster</button>
+        </mat-card-content>
+      </mat-card>
+  
+      <!-- Common Widget -->
+      <mat-card class="widget-card announcements">
+        <mat-card-header>
+          <mat-card-title>Latest Announcements</mat-card-title>
+          <mat-icon>campaign</mat-icon>
+        </mat-card-header>
+        <mat-card-content>
+          <mat-list>
+            <mat-list-item>System Maintenance - Saturday 2AM</mat-list-item>
+            <mat-list-item>New Library Resources Available</mat-list-item>
+          </mat-list>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>

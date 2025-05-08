@@ -3,8 +3,8 @@ POST http://localhost:3000/login
 Content-Type: application/json
 
 {
-  "email": "j@d.com",
-  "password": "12Az!3456"
+  "email": "a@d.com",
+  "password": "12Az!"
 }
 
 ###
@@ -15,7 +15,7 @@ Content-Type: application/json
 
 {
   "name": "John Doe",
-  "email": "j@d.com",
+  "email": "a@d.com",
   "password": "12Az!3456",
   "role":"student"
 }
@@ -27,12 +27,11 @@ GET http://localhost:3000/users
 GET http://localhost:3000/user/6814b95e45f3bf099329d069
 
 ### Update User
-PATCH http://localhost:3000/user/6814d4f3e07cb8c105e48215
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MTRkNGYzZTA3Y2I4YzEwNWU0ODIxNSIsIm5hbWUiOiJKb2huIERvZSIsInJvbGUiOiJzdHVkZW50IiwiaWF0IjoxNzQ2MTk4NjM1LCJleHAiOjE3NDYyMDIyMzV9.NuhZ3mQtCSMTFqM2s3wqkB9mFdVquHVZThc-jEd8bvU
+PATCH http://localhost:3000/user/68150f9ce9d2f01b186d1aae
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MTUwZjljZTlkMmYwMWIxODZkMWFhZSIsIm5hbWUiOiJKb2huIERvZSIsInJvbGUiOiJzdHVkZW50IiwiaWF0IjoxNzQ2MjEwNzI4LCJleHAiOjE3NDYyMTQzMjh9.MkjG2snactxNLHo50036sIADCHyTs4cG-uRMBjx4Fhk"
 Content-Type: application/json
 
 {
-  "name": "Jane Doe",
   "password": "12Az!"
 }
 
@@ -40,3 +39,7 @@ Content-Type: application/json
 DELETE http://localhost:3000/user/6814b95e45f3bf099329d069
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MTRiOTVlNDVmM2JmMDk5MzI5ZDA2OSIsInJvbGUiOiJzdHVkZW50IiwiaWF0IjoxNzQ2MTkyMzg1LCJleHAiOjE3NDYxOTU5ODV9.LCqdR3yMlbQfhJPOVRF4qZ5C86nJmC0p4ymDbcJMSqg
 //renvoie une erreur server mais delete bien le user 
+
+### Test Me Endpoint
+GET http://localhost:3000/me
+Cookie: jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MTUwZjljZTlkMmYwMWIxODZkMWFhZSIsInJvbGUiOiJzdHVkZW50IiwiaWF0IjoxNzQ2NzI4ODEzLCJleHAiOjE3NDY3MzI0MTN9.iTkwLTPjQ2sFh62iPEgJFoXmxQ0AxQj1Ysb2bqRbJDI
