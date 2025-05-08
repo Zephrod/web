@@ -40,4 +40,14 @@ export class AuthService {
       tap(() => this.currentUser.next(null))
     );
   }
+  register(credentials: { name: string, email: string, password: string, role: string }) {
+    return this.http.post<any>('http://localhost:3000/register', credentials, {
+      withCredentials: true
+    }).pipe(
+      tap(() => {
+        // Clear previous auth state
+        this.currentUser.next(null);
+      })
+    );
+  }
 }

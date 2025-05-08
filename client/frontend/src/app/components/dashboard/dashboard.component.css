@@ -1,0 +1,33 @@
+.dashboard-container {
+    padding: 20px;
+  }
+  
+  .role-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+  
+  .widget-grid {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+  
+  .widget-card {
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .widget-card mat-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .announcements mat-list-item {
+    height: auto;
+    padding: 8px 0;
+  }

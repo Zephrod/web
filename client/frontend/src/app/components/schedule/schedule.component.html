@@ -1,0 +1,40 @@
+<div class="schedule-container" *ngIf="authService.currentUser$ | async as user">
+    <h2>{{ user.role | titlecase }} Schedule</h2>
+    
+    <mat-table [dataSource]="user.schedule" class="mat-elevation-z8">
+      <!-- Day Column -->
+      <ng-container matColumnDef="day">
+        <mat-header-cell *matHeaderCellDef>Day</mat-header-cell>
+        <mat-cell *matCellDef="let session">{{ session.day }}</mat-cell>
+      </ng-container>
+  
+      <!-- Time Column -->
+      <ng-container matColumnDef="time">
+        <mat-header-cell *matHeaderCellDef>Time</mat-header-cell>
+        <mat-cell *matCellDef="let session">
+          {{ session.startTime }} - {{ session.endTime }}
+        </mat-cell>
+      </ng-container>
+  
+      <!-- Course Column -->
+      <ng-container matColumnDef="course">
+        <mat-header-cell *matHeaderCellDef>Course</mat-header-cell>
+        <mat-cell *matCellDef="let session">{{ session.course }}</mat-cell>
+      </ng-container>
+  
+      <!-- Location Column -->
+      <ng-container matColumnDef="location">
+        <mat-header-cell *matHeaderCellDef>Location</mat-header-cell>
+        <mat-cell *matCellDef="let session">{{ session.location }}</mat-cell>
+      </ng-container>
+  
+      <!-- Instructor Column -->
+      <ng-container matColumnDef="instructor">
+        <mat-header-cell *matHeaderCellDef>Instructor</mat-header-cell>
+        <mat-cell *matCellDef="let session">{{ session.instructor }}</mat-cell>
+      </ng-container>
+  
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+  </div>

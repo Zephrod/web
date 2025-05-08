@@ -1,17 +1,17 @@
-const express = require('express');
-const { adminOnly, professorOnly } = require('../middlewares/authorization');
-const {
+const { Router } = require("express");
+const router = new Router();
+const { 
   createCourse,
-  updateCourse,
+  updateSchedule,
   getCourses,
   assignProfessor
 } = require('../controllers/course');
+const { checkScheduleConflicts } = require('../middlewares/ScheduleCheck');
+const { professorOnly } = require('../middlewares/authorisation');
 
-const router = express.Router();
+router.post('/courses', professorOnly, checkScheduleConflicts, createCourse);
+router.get('/courses', getCourses);
+router.patch('/:id/professor', professorOnly, assignProfessor);
+router.patch('/:id/schedule', professorOnly, checkScheduleConflicts, updateSchedule);
 
-router.post('/', adminOnly, createCourse);
-router.get('/', getCourses);
-router.patch('/:id/professor', adminOnly, assignProfessor);
-router.patch('/:id/schedule', adminOnly, updateSchedule);
-
-export default router;
+module.exports = router;

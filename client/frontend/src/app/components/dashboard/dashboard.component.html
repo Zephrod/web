@@ -2,9 +2,9 @@
     <!-- Role-Based Header -->
     <div class="role-header">
       <h1>{{ user.role | titlecase }} Dashboard</h1>
-      <mat-chip-grid>
+      <mat-chip-set>
         <mat-chip color="primary" selected>{{ user.email }}</mat-chip>
-      </mat-chip-grid>
+      </mat-chip-set>
     </div>
   
     <!-- Quick Stats Grid -->
@@ -20,7 +20,7 @@
           <button mat-raised-button color="accent">View Schedule</button>
         </mat-card-content>
       </mat-card>
-  
+
       <!-- Teacher Widgets -->
       <mat-card *ngIf="user.role === 'teacher'" class="widget-card">
         <mat-card-header>
@@ -32,7 +32,7 @@
           <button mat-raised-button color="accent">Manage Roster</button>
         </mat-card-content>
       </mat-card>
-  
+
       <!-- Common Widget -->
       <mat-card class="widget-card announcements">
         <mat-card-header>
@@ -47,4 +47,4 @@
         </mat-card-content>
       </mat-card>
     </div>
-  </div>
+</div>

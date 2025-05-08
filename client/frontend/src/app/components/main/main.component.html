@@ -1,48 +1,35 @@
-<!-- Main layout -->
-<mat-toolbar color="primary">
-  <button mat-icon-button (click)="sidenav.toggle()">
-    <mat-icon>menu</mat-icon>
-  </button>
-  <span>University Portal</span>
-  
-  <!-- User Info -->
-  <div class="user-info" *ngIf="authService.currentUser$ | async as user">
-    <span>{{ user.name }} ({{ user.role }})</span>
-    <button mat-button (click)="logout()">
-      <mat-icon>logout</mat-icon>
-      Logout
+<ng-container *ngIf="(authService.currentUser$ | async) as user">
+  <mat-toolbar color="primary" class="main-toolbar">
+    <button mat-icon-button (click)="sidenav.toggle()">
+      <mat-icon>menu</mat-icon>
     </button>
-  </div>
-</mat-toolbar>
+    <button mat-icon-button routerLink="/dashboard">
+    <span class="title">University Portal</span>
+    </button>
+    <div class="user-info">
+      <span class="user-name">{{ user.name }} ({{ user.role }})</span>
+      <button mat-icon-button (click)="logout()" matTooltip="Logout">
+        <mat-icon>logout</mat-icon>
+      </button>
+    </div>
+  </mat-toolbar>
 
-<mat-sidenav-container>
-  <mat-sidenav #sidenav>
-    <mat-nav-list>
-      <!-- Common Navigation -->
-      <a mat-list-item routerLink="/dashboard" routerLinkActive="active">
-        <mat-icon>home</mat-icon>
-        Home
+  <mat-sidenav-container class="main-container">
+    <mat-sidenav #sidenav class="app-sidenav">
+      <!-- Sidenav content -->
+      <a mat-list-item routerLink="/schedule" routerLinkActive="active">
+        <mat-icon>schedule</mat-icon>
+        My Schedule
       </a>
-
-      <!-- Student-specific -->
-      <ng-container *ngIf="(authService.currentUser$ | async)?.role === 'student'">
-        <a mat-list-item routerLink="/dashboard/courses">
-          <mat-icon>book</mat-icon>
-          My Courses
-        </a>
-      </ng-container>
-
-      <!-- Teacher-specific -->
-      <ng-container *ngIf="(authService.currentUser$ | async)?.role === 'teacher'">
-        <a mat-list-item routerLink="/dashboard/management">
-          <mat-icon>group</mat-icon>
-          Manage Students
-        </a>
-      </ng-container>
-    </mat-nav-list>
-  </mat-sidenav>
-
-  <mat-sidenav-content>
+    </mat-sidenav>
+    
+    <mat-sidenav-content>
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</ng-container>
+  
+  <!-- This will show when not logged in -->
+  <ng-container *ngIf="!(authService.currentUser$ | async)">
     <router-outlet></router-outlet>
-  </mat-sidenav-content>
-</mat-sidenav-container>
+  </ng-container>

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-
+import { AuthService } from '../../services/auth.service';
 @Component({
   selector: 'app-register',
   standalone: false,
@@ -9,22 +9,31 @@ import { Router } from '@angular/router';
 })
 export class RegisterComponent {
   credentials = {
+    name: '',
     email: '',
     password: '',
-    confirmPassword: ''
+    role: 'student'
   };
-
+  
   message = '';
 
-  constructor(private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
   register() {
-    if (this.credentials.password !== this.credentials.confirmPassword) {
-      this.message = "❌ Les mots de passe ne correspondent pas.";
-    } else {
-      this.message = "✅ Compte créé (simulation)";
-      setTimeout(() => this.router.navigate(['/login']), 1500);
+    this.authService.register(this.credentials).subscribe({
+      next: (res) => {
+        this.message = 'Registration successful! Redirecting to login...';
+        setTimeout(() => {
+          this.router.navigate(['/login']);
+        }, 2000);
+      },
+      error: (err) => {
+        console.error('Registration error:', err);
+        this.message = err.error?.message || 'Registration failed';
+      }
+    });
   }
-}
-
 }

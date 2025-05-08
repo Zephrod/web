@@ -1,38 +1,52 @@
-<div class="container">
-    <div class="form-container">
-      <h2>Connexion</h2>
-  
-      <form (ngSubmit)="login()" #loginForm="ngForm">
-        <div class="form-group">
-          <label for="email">Email :</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            [(ngModel)]="credentials.email"
-            required
-          />
-        </div>
-  
-        <div class="form-group">
-          <label for="password">Mot de passe :</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            [(ngModel)]="credentials.password"
-            required
-          />
-        </div>
-  
-        <button type="submit" [disabled]="!loginForm.form.valid">Se connecter</button>
-      </form>
-  
-      <div *ngIf="message" class="message">{{ message }}</div>
-  
-      <div class="register-link">
-        <a routerLink="/register">Créer un compte</a>
-      </div>
+<div class="login-container">
+  <mat-card class="login-card">
+    <div class="logo-container">
+      <mat-icon class="logo">school</mat-icon>
+      <h1 class="app-name">University Portal</h1>
     </div>
-  </div>
-  
+
+    <mat-card-content>
+      <form (ngSubmit)="login()" #loginForm="ngForm">
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput 
+                 type="email" 
+                 name="email" 
+                 [(ngModel)]="credentials.email"
+                 required>
+          <mat-icon matPrefix>mail</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Password</mat-label>
+          <input matInput 
+                 type="password" 
+                 name="password" 
+                 [(ngModel)]="credentials.password"
+                 required>
+          <mat-icon matPrefix>lock</mat-icon>
+        </mat-form-field>
+
+        <button mat-raised-button 
+                color="primary" 
+                type="submit" 
+                [disabled]="!loginForm.form.valid"
+                class="submit-button">
+          Sign In
+        </button>
+
+        <div *ngIf="message" class="message" [class.error]="message === 'Erreur de connexion'">
+          <mat-icon>{{ message === 'Connexion réussie !' ? 'check_circle' : 'error' }}</mat-icon>
+          {{ message }}
+        </div>
+      </form>
+    </mat-card-content>
+
+    <mat-card-actions class="footer">
+      <a mat-button routerLink="/register" color="accent">
+        Create new account
+        <mat-icon>arrow_forward</mat-icon>
+      </a>
+    </mat-card-actions>
+  </mat-card>
+</div>

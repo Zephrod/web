@@ -7,8 +7,6 @@ Content-Type: application/json
   "password": "12Az!"
 }
 
-###
-
 ### Create User
 POST http://localhost:3000/register
 Content-Type: application/json
@@ -42,4 +40,12 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MTRiOTVlN
 
 ### Test Me Endpoint
 GET http://localhost:3000/me
-Cookie: jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MTUwZjljZTlkMmYwMWIxODZkMWFhZSIsInJvbGUiOiJzdHVkZW50IiwiaWF0IjoxNzQ2NzI4ODEzLCJleHAiOjE3NDY3MzI0MTN9.iTkwLTPjQ2sFh62iPEgJFoXmxQ0AxQj1Ysb2bqRbJDI
+Cookie: jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MTUwZjljZTlkMmYwMWIxODZkMWFhZSIsInJvbGUiOiJzdHVkZW50IiwiaWF0IjoxNzQ2NzI5MzU1LCJleHAiOjE3NDY3MzI5NTV9.Vd0Ydd4MF8GmFSWd6S_4XxYM-8vKl88Uvia3XuxqM0E
+
+
+### Seed Test Data
+POST http://localhost:3000/seed-test-data
+Content-Type: application/json
+###
+GET http://localhost:3000/courses
+Content-Type: application/json

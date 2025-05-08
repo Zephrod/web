@@ -1,53 +1,71 @@
-<div class="container">
-  <div class="form-container">
-    <h2>Créer un compte</h2>
-
-    <form (ngSubmit)="register()" #registerForm="ngForm">
-      <!-- Email -->
-      <div class="form-group">
-        <label for="email">Email :</label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          [(ngModel)]="credentials.email"
-          required
-        />
-      </div>
-
-      <!-- Mot de passe -->
-      <div class="form-group">
-        <label for="password">Mot de passe :</label>
-        <input
-          type="password"
-          id="password"
-          name="password"
-          [(ngModel)]="credentials.password"
-          required
-        />
-      </div>
-
-      <!-- Confirmation du mot de passe -->
-      <div class="form-group">
-        <label for="confirmPassword">Confirmer le mot de passe :</label>
-        <input
-          type="password"
-          id="confirmPassword"
-          name="confirmPassword"
-          [(ngModel)]="credentials.confirmPassword"
-          required
-        />
-      </div>
-
-      <button type="submit" [disabled]="!registerForm.form.valid">S'inscrire</button>
-    </form>
-
-    <!-- Message d'erreur ou succès -->
-    <div *ngIf="message" class="message">{{ message }}</div>
-
-    <!-- Lien vers la page de login -->
-    <div class="login-link">
-      <a routerLink="/login">Déjà inscrit ? Se connecter</a>
+<div class="register-container">
+  <mat-card class="register-card">
+    <div class="logo-container">
+      <mat-icon class="logo">person_add</mat-icon>
+      <h1 class="app-name">Create Account</h1>
     </div>
-  </div>
+
+    <mat-card-content>
+      <form (ngSubmit)="register()" #registerForm="ngForm">
+        <mat-form-field appearance="outline">
+          <mat-label>Full Name</mat-label>
+          <input matInput 
+                 name="name" 
+                 [(ngModel)]="credentials.name"
+                 required>
+          <mat-icon matPrefix>person</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput 
+                 type="email" 
+                 name="email" 
+                 [(ngModel)]="credentials.email"
+                 required>
+          <mat-icon matPrefix>mail</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Password</mat-label>
+          <input matInput 
+                 type="password" 
+                 name="password" 
+                 [(ngModel)]="credentials.password"
+                 required>
+          <mat-icon matPrefix>lock</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Role</mat-label>
+          <mat-select name="role" [(ngModel)]="credentials.role" required>
+            <mat-option value="student">Student</mat-option>
+            <mat-option value="teacher">Teacher</mat-option>
+            <mat-option value="staff">Staff</mat-option>
+          </mat-select>
+          <mat-icon matPrefix>security</mat-icon>
+        </mat-form-field>
+
+        <button mat-raised-button 
+                color="primary" 
+                type="submit" 
+                [disabled]="!registerForm.form.valid"
+                class="submit-button">
+          Register
+        </button>
+
+        <div *ngIf="message" class="message" [class.error]="message.startsWith('Error')">
+          <mat-icon>{{ message.startsWith('Error') ? 'error' : 'check_circle' }}</mat-icon>
+          {{ message }}
+        </div>
+      </form>
+    </mat-card-content>
+
+    <mat-card-actions class="footer">
+      <a mat-button routerLink="/login" color="accent">
+        Already have an account? Login
+        <mat-icon>arrow_forward</mat-icon>
+      </a>
+    </mat-card-actions>
+  </mat-card>
 </div>
