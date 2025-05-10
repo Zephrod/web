@@ -4,8 +4,57 @@ const { setAuthCookie, clearAuthCookie } = require('../utils/cookie');
 const { findUserByEmail, createUser } = require('../utils/mongooseHelpers'); // Import helpers
 
 const User = require('../models/user');
-
+/**
+ * @swagger
+ * tags:
+ *   name: Authentication
+ *   description: User authentication and session management
+ */
 module.exports = {
+  /**
+   * @swagger
+   * /login:
+   *   post:
+   *     summary: Authenticate user
+   *     tags: [Authentication]
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *             type: object
+   *             required:
+   *               - email
+   *               - password
+   *             properties:
+   *               email:
+   *                 type: string
+   *                 format: email
+   *                 example: user@univ.test
+   *               password:
+   *                 type: string
+   *                 format: password
+   *                 example: securePassword123!
+   *     responses:
+   *       200:
+   *         description: Successfully authenticated
+   *         headers:
+   *           Set-Cookie:
+   *             schema:
+   *               type: string
+   *               example: token=abcde12345; Path=/; HttpOnly
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 token:
+   *                   type: string
+   *                 user:
+   *                   $ref: '#/components/schemas/User'
+   *       401:
+   *         description: Invalid credentials
+   */
   login: async (req, res, next) => {
     const { email, password } = req.body;
 
@@ -39,7 +88,28 @@ module.exports = {
       next(err);
     }
   },
-
+  /**
+   * @swagger
+   * /register:
+   *   post:
+   *     summary: Register new user
+   *     tags: [Authentication]
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *             $ref: '#/components/schemas/User'
+   *     responses:
+   *       201:
+   *         description: User registered successfully
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/User'
+   *       409:
+   *         description: Email already registered
+   */
   register: async (req, res, next) => {
     try {
       const { firstname, lastname, email, password, role } = req.body;
@@ -74,11 +144,43 @@ module.exports = {
       next(err);
     }
   },
-
+  /**
+   * @swagger
+   * /logout:
+   *   post:
+   *     summary: Invalidate user session
+   *     tags: [Authentication]
+   *     responses:
+   *       200:
+   *         description: Successfully logged out
+   *         headers:
+   *           Set-Cookie:
+   *             schema:
+   *               type: string
+   *               example: token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT
+   */
   logout: async (req, res) => {
     clearAuthCookie(res);
     res.status(200).json({ message: 'Déconnexion réussie' });
   },
+  /**
+   * @swagger
+   * /me:
+   *   get:
+   *     summary: Get current user profile
+   *     tags: [Authentication]
+   *     security:
+   *       - cookieAuth: []
+   *     responses:
+   *       200:
+   *         description: Current user details
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/User'
+   *       401:
+   *         description: Unauthorized
+   */
   getCurrentUser: async (req, res) => {
     try {
       if (!req.user?.id) {

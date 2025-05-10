@@ -1,63 +1,30 @@
-// controllers/enrollmentController.js
-const { 
-    findById,
-    findAll,
-    createDoc,
-    updateDoc,
-    deleteDoc
-  } = require('../utils/mongooseHelpers');
-  const Enrollment = require('../models/Enrollment');
-  module.exports = {
- 
-    create: async (req, res, next) => {
-      try {
-        const enrollment = await createDoc(Enrollment, req.body);
-        res.status(201).json(enrollment);
-      } catch (err) {
-        next(err);
-      }
-    },
-  
-    getAll: async (req, res, next) => {
-      try {
-        const enrollments = await findAll(Enrollment)
-          .populate('student', 'name email')
-          .populate('course', 'title');
-        res.json(enrollments);
-      } catch (err) {
-        next(err);
-      }
-    },
-  
-    getOne: async (req, res, next) => {
-      try {
-        const enrollment = await findById(Enrollment, req.params.id)
-          .populate('student', 'name email')
-          .populate('course', 'title');
-        if (!enrollment) return res.sendStatus(404);
-        res.json(enrollment);
-      } catch (err) {
-        next(err);
-      }
-    },
-  
-    update: async (req, res, next) => {
-      try {
-        const enrollment = await updateDoc(Enrollment, req.params.id, req.body);
-        if (!enrollment) return res.sendStatus(404);
-        res.json(enrollment);
-      } catch (err) {
-        next(err);
-      }
-    },
-  
-    delete: async (req, res, next) => {
-      try {
-        const result = await deleteDoc(Enrollment, req.params.id);
-        if (!result) return res.sendStatus(404);
-        res.sendStatus(204);
-      } catch (err) {
-        next(err);
-      }
+const Enrollment = require('../models/Enrollment');
+const Student = require('../models/student');
+const Course = require('../models/course');
+const Semester = require('../models/semester');
+
+exports.enrollStudent = async (req, res) => {
+  const { studentId, courseId, semesterId } = req.body;
+
+  try {
+    const student = await Student.findById(studentId);
+    const course = await Course.findById(courseId);
+    const semester = await Semester.findById(semesterId);
+
+    if (!student || !course || !semester) {
+      return res.status(404).json({ message: 'Student, Course or Semester not found' });
     }
-  };
+
+    const enrollment = new Enrollment({
+      student: student._id,
+      course: course._id,
+      semester: semester._id
+    });
+
+    await enrollment.save();
+    res.status(201).json({ message: 'Enrollment successful', enrollment });
+  } catch (err) {
+    console.error('Enrollment error:', err);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
