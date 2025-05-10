@@ -17,7 +17,10 @@ export class AuthService {
     return this.http.post('http://localhost:3000/login', credentials, {
       withCredentials: true
     }).pipe(
-      tap(() => this.checkAuth())
+      tap((response: any) => {
+        this.currentUser.next(response.user); // Immediately update user state
+        this.checkAuth(); // Optional: Verify auth status if needed
+      })
     );
   }
 

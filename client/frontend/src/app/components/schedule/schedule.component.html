@@ -1,7 +1,6 @@
-<div class="schedule-container" *ngIf="authService.currentUser$ | async as user">
-    <h2>{{ user.role | titlecase }} Schedule</h2>
-    
-    <mat-table [dataSource]="user.schedule" class="mat-elevation-z8">
+<div class="schedule-container" *ngIf="schedule.length > 0">
+    <h2>Weekly Schedule</h2>
+    <mat-table [dataSource]="schedule" class="mat-elevation-z8">
       <!-- Day Column -->
       <ng-container matColumnDef="day">
         <mat-header-cell *matHeaderCellDef>Day</mat-header-cell>

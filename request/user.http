@@ -1,51 +1,58 @@
+@baseUrl = http://localhost:3000
+
 ### Login (Get JWT)
-POST http://localhost:3000/login
+# @name Login
+POST {{baseUrl}}/login
 Content-Type: application/json
 
 {
-  "email": "a@d.com",
-  "password": "12Az!"
+  "email": "student@univ.test",
+  "password": "test1234"
 }
 
 ### Create User
-POST http://localhost:3000/register
+POST {{baseUrl}}/register
 Content-Type: application/json
 
 {
-  "name": "John Doe",
-  "email": "a@d.com",
-  "password": "12Az!3456",
+  "firstname": "John",
+  "lastname": "Doe",
+  "email": "student@univ.test",
+  "password": "test1234",
   "role":"student"
 }
 
 ### Get All Users
-GET http://localhost:3000/users
+GET {{baseUrl}}/users
 
 ### Get One User
-GET http://localhost:3000/user/6814b95e45f3bf099329d069
+GET {{baseUrl}}/user/{{Login.response.body.user.id}}
 
 ### Update User
-PATCH http://localhost:3000/user/68150f9ce9d2f01b186d1aae
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MTUwZjljZTlkMmYwMWIxODZkMWFhZSIsIm5hbWUiOiJKb2huIERvZSIsInJvbGUiOiJzdHVkZW50IiwiaWF0IjoxNzQ2MjEwNzI4LCJleHAiOjE3NDYyMTQzMjh9.MkjG2snactxNLHo50036sIADCHyTs4cG-uRMBjx4Fhk"
+PATCH {{baseUrl}}/user/{{Login.response.body.user.id}}
+Authorization: Bearer {{Login.response.body.token}}
 Content-Type: application/json
 
 {
-  "password": "12Az!"
+  "firstname": "Jenna",
+  "lastname": "Hee",
+  "password": "test"
 }
 
 ### Delete User
-DELETE http://localhost:3000/user/6814b95e45f3bf099329d069
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MTRiOTVlNDVmM2JmMDk5MzI5ZDA2OSIsInJvbGUiOiJzdHVkZW50IiwiaWF0IjoxNzQ2MTkyMzg1LCJleHAiOjE3NDYxOTU5ODV9.LCqdR3yMlbQfhJPOVRF4qZ5C86nJmC0p4ymDbcJMSqg
-//renvoie une erreur server mais delete bien le user 
+DELETE {{baseUrl}}/user/{{Login.response.body.user.id}}
+Authorization: Bearer {{Login.response.body.token}}
+// Renvoie une erreur server mais delete bien le user
 
 ### Test Me Endpoint
-GET http://localhost:3000/me
-Cookie: jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MTUwZjljZTlkMmYwMWIxODZkMWFhZSIsInJvbGUiOiJzdHVkZW50IiwiaWF0IjoxNzQ2NzI5MzU1LCJleHAiOjE3NDY3MzI5NTV9.Vd0Ydd4MF8GmFSWd6S_4XxYM-8vKl88Uvia3XuxqM0E
-
+GET {{baseUrl}}/me
+Cookie: jwt={{Login.response.body.token}}
 
 ### Seed Test Data
-POST http://localhost:3000/seed-test-data
+POST {{baseUrl}}/seed-test-data
 Content-Type: application/json
+
 ###
-GET http://localhost:3000/courses
+
+GET {{baseUrl}}/courses
 Content-Type: application/json

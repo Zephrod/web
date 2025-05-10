@@ -10,7 +10,6 @@ module.exports = {
     const { email, password } = req.body;
 
     try {
-      // Changed from User.findOne() to helper
       const user = await findUserByEmail(email);
       
       if (!user) return res.status(401).json({ message: 'Utilisateur non trouvé' });
@@ -26,9 +25,10 @@ module.exports = {
       setAuthCookie(res, token);
       res.status(200).json({ 
         message: 'Login successful',
+        token,
         user: {
           id: user._id,
-          name: user.name,
+          firstname: user.firstname,
           email: user.email,
           role: user.role
         }
@@ -42,25 +42,32 @@ module.exports = {
 
   register: async (req, res, next) => {
     try {
-      const { name, email, password, role } = req.body;
+      const { firstname, lastname, email, password, role } = req.body;
 
-      if (!['student', 'teacher', 'staff'].includes(role)) {
+      if (!['student', 'teacher'].includes(role)) {
         return res.status(400).json({ message: 'Invalid role' });
       }
 
-      // Changed from User.findOne() to helper
       const existing = await findUserByEmail(email);
       if (existing) return res.status(409).json({ message: 'Email already in use' });
 
       // Changed from User.create() to helper
-      const user = await createUser({ name, email, password, role });
+      const user = await createUser({ 
+        firstname, 
+        lastname, 
+        email, 
+        password, 
+        role 
+      });
 
       res.status(201).json({
         message: 'User registered successfully',
         user: {
-          id: user._id, // Changed from user.id to user._id
+          id: user._id,
+          firstname: user.firstname,
+          lastname: user.lastname,
           email: user.email,
-          role: user.role,
+          role: user.role
         }
       });
     } catch (err) {

@@ -1,13 +1,29 @@
 const Course = require('../models/course');
 
-exports.createCourse = async (req, res) => {
-  try {
-    const newCourse = await Course.create(req.body);
-    res.status(201).json(newCourse);
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-};
+exports.createCourse = async (req, res, next) => {
+    try {
+      // Add validation for student/course existence
+      const student = await User.findById(req.body.student);
+      const course = await Course.findById(req.body.course);
+      
+      if (!student || student.role !== 'student') {
+        return res.status(400).json({ error: 'Invalid student ID' });
+      }
+      
+      if (!course) {
+        return res.status(400).json({ error: 'Invalid course ID' });
+      }
+
+      const enrollment = await createDoc(Enrollment, req.body);
+      res.status(201).json({
+        student: enrollment.student,
+        course: enrollment.course,
+        status: enrollment.status
+      });
+    } catch (err) {
+      next(err);
+    }
+  },
 
 exports.updateSchedule = async (req, res) => {
   try {

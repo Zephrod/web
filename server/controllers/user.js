@@ -1,7 +1,5 @@
 // controllers/userController.js
-const bcryptjs = require("bcryptjs");
 const mongoose = require('mongoose');
-const User = require('../models/user');
 
 const { 
   getAllUsers,
@@ -9,7 +7,7 @@ const {
   updateUser,
   deleteUser
 } = require('../utils/mongooseHelpers');
-
+const { clearAuthCookie } = require('../utils/cookie');
 module.exports = {
   getAll: async (req, res, next) => {
     try {
@@ -32,59 +30,50 @@ module.exports = {
 
   update: async (req, res) => {
     const { id } = req.params;
-      const updateData = { ...req.body };
+    const updateData = { ...req.body };
     
-      if (Object.keys(updateData).length === 0) {
+    if (Object.keys(updateData).length === 0) {
         return res.status(400).json({ message: 'No update data provided' });
-      }
-    
-      try {
-        // Handle password updates separately
-        if (updateData.password) {
-          const salt = await bcryptjs.genSalt(10);
-          updateData.password = await bcryptjs.hash(updateData.password, salt);
-        }
-    
-        const updatedUser = await User.findByIdAndUpdate(
-          id,
-          updateData,
-          { new: true, runValidators: true }
-        );
-    
+    }
+
+    try {
+        const updatedUser = await updateUser(id, updateData);
+        
         if (!updatedUser) {
-          return res.status(404).json({ message: 'User not found' });
+            return res.status(404).json({ message: 'User not found' });
         }
-    
-        res.json(updatedUser);
-      } catch (error) {
+
+        res.json({
+            id: updatedUser._id,
+            firstname: updatedUser.firstname,
+            lastname: updatedUser.lastname,
+            email: updatedUser.email,
+            role: updatedUser.role
+        });
+    } catch (error) {
         res.status(500).json({ message: 'Server error', error: error.message });
-      }
-  },
+    }
+},
 
   delete: async (req, res, next) => {
     try {
-      // ID validation remains the same
-      if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-        return res.status(400).json({ message: 'Format ID invalide' });
-      }
+        if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+            return res.status(400).json({ message: 'Invalid ID format' });
+        }
 
-      // Now we can safely assume req.user exists
-      console.log('Authenticated user:', req.user);
-      
-      const deletedUser = await deleteUser(req.params.id);
-      if (!deletedUser) {
-        return res.status(404).json({ message: 'Utilisateur introuvable' });
-      }
+        const deletedUser = await deleteUser(req.params.id);
+        if (!deletedUser) {
+            return res.status(404).json({ message: 'User not found' });
+        }
 
-      // Clear cookie if deleting own account
-      if (req.user.id === req.params.id) {
-        clearAuthCookie(res);
-      }
+        if (req.user.id === req.params.id) {
+            clearAuthCookie(res);
+        }
 
-      res.sendStatus(204);
+        res.sendStatus(204);
     } catch (err) {
-      console.error('Delete error:', err);
-      res.status(500).json({ message: 'Erreur serveur' });
+        console.error('Delete error:', err);
+        res.status(500).json({ message: 'Server error', error: err.message });
     }
-  }
+}
 };

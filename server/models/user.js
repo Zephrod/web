@@ -1,19 +1,18 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
-const { required } = require('joi');
 
 const userSchema = new mongoose.Schema({
-    name: { type: String, required: true},
-    email: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
-    role: { 
-      type: String, 
-      enum: ['student', 'teacher', 'staff'],
-      required: true 
-    }
-  }, { discriminatorKey: 'role' });
+  firstname: { type: String, required: true },
+  lastname: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
+  role: {
+    type: String,
+    enum: ['student', 'teacher'],
+    required: true
+  },
+}, { discriminatorKey: 'role', timestamps: true });
 
-  // Hash password only on creation or explicit password change
 userSchema.pre('save', async function(next) {
   if (!this.isModified('password') && !this.isNew) return next();
 
@@ -32,4 +31,5 @@ userSchema.methods.checkPassword = function(candidatePassword) {
   return bcrypt.compare(candidatePassword, this.password);
 };
 
-module.exports = mongoose.model('User', userSchema);
+const User = mongoose.model('User', userSchema);
+module.exports = User;

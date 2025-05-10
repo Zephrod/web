@@ -13,31 +13,28 @@ module.exports = {
     
     if (!updateData) throw new Error('No update data provided');
 
-    // Handle password update only if provided and valid
-    if (updateData.password && typeof updateData.password === 'string') {
-      user.password = updateData.password;
-    }
-    
-    // Validate allowed fields
-    const allowedUpdates = ['name', 'email', 'role'];
+    // Validate allowed fields (match user schema)
+    const allowedUpdates = ['firstname', 'lastname', 'email'];
     const invalidFields = Object.keys(updateData)
-      .filter(key => key !== 'password')
-      .filter(key => !allowedUpdates.includes(key));
+        .filter(key => !allowedUpdates.includes(key) && key !== 'password');
 
     if (invalidFields.length > 0) {
-      throw new Error(`Invalid fields: ${invalidFields.join(', ')}`);
+        throw new Error(`Invalid fields: ${invalidFields.join(', ')}`);
     }
 
-    // Update other fields excluding password
-    Object.keys(updateData)
-      .filter(key => key !== 'password')
-      .forEach(key => {
-        user[key] = updateData[key];
-      });
+    // Handle password update through schema methods
+    if (updateData.password) {
+        user.password = updateData.password; // Will be hashed in pre-save hook
+    }
+
+    // Update other fields
+    allowedUpdates.forEach(key => {
+        if (updateData[key]) user[key] = updateData[key];
+    });
 
     await user.save();
     return user;
-  },
+},
   deleteUser: (id) => User.findByIdAndDelete(id),
 
   // Generic operations (can be used for other models)

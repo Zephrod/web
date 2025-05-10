@@ -2,31 +2,29 @@
 const mongoose = require('mongoose');
 
 const enrollmentSchema = new mongoose.Schema({
-  student: {
+  student: { 
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'Student', 
+    required: true 
+  },
+  course: { 
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'Course', 
+    required: true 
+  },
+  semester: { 
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
-  },
-  course: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Course',
-    required: true
-  },
-  academicYear: {
-    type: String, // Example: "2023-2024"
-    required: true
-  },
-  semester: {
-    type: String,
-    enum: ['Fall', 'Spring', 'Summer'],
-    required: true
+    ref: 'Semester',
+    required: true 
   },
   grade: {
-    type: String // optional, can be filled later
+    type: String,
+    enum: ['A', 'B', 'C', 'D', 'F', null],
+    default: null
   },
   status: {
     type: String,
-    enum: ['enrolled', 'passed', 'failed', 'retaken', 'dropped'],
+    enum: ['enrolled', 'completed', 'failed', 'dropped'],
     default: 'enrolled'
   }
 }, { timestamps: true });
