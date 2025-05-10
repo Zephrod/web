@@ -1,0 +1,40 @@
+const swaggerJsdoc = require('swagger-jsdoc');
+
+const options = {
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'University Portal API',  // Updated title
+      version: '1.0.0',
+      description: 'User management endpoints'  // Add description
+    },
+    components: {
+      securitySchemes: {
+        cookieAuth: {
+          type: 'apiKey',
+          in: 'cookie',
+          name: 'token'
+        }
+      },
+      schemas: {
+        User: {
+          type: 'object',
+          required: ['firstname', 'lastname', 'email', 'role'],
+          properties: {
+            firstname: { type: 'string', example: 'John' },
+            lastname: { type: 'string', example: 'Doe' },
+            email: { type: 'string', format: 'email', example: 'john@univ.test' },
+            role: {
+              type: 'string',
+              enum: ['student', 'teacher', 'staff'],
+              example: 'student'
+            }
+          }
+        }
+      }
+    }
+  },
+  apis: ['/server/controllers/*.js'] // Absolute path to controllers
+};
+
+module.exports = swaggerJsdoc(options);

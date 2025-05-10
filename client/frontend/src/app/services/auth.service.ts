@@ -28,9 +28,13 @@ export class AuthService {
     return this.http.get('http://localhost:3000/me', {
       withCredentials: true
     }).pipe(
-      tap(user => this.currentUser.next(user)),
+      tap(user => {
+        console.log('Fetched user:', user); // Debug log
+        this.currentUser.next(user);
+      }),
       map(() => true),
-      catchError(() => {
+      catchError(error => {
+        console.error('Failed to fetch user:', error);
         this.currentUser.next(null);
         return of(false);
       })

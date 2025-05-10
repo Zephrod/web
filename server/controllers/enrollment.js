@@ -7,8 +7,8 @@ const {
     deleteDoc
   } = require('../utils/mongooseHelpers');
   const Enrollment = require('../models/Enrollment');
-  
   module.exports = {
+ 
     create: async (req, res, next) => {
       try {
         const enrollment = await createDoc(Enrollment, req.body);

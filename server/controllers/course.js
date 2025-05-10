@@ -1,5 +1,4 @@
 const Course = require('../models/course');
-
 exports.createCourse = async (req, res, next) => {
     try {
       // Add validation for student/course existence

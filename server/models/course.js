@@ -19,7 +19,7 @@ const courseSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Course'
   }],
-  schedule: {
+  schedule: { //! a Revoir comment implementer le calendrier 
     days: [String], // ['Monday', 'Wednesday']
     time: String,   // '14:00-16:00'
     room: String

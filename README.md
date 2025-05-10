@@ -8,6 +8,11 @@ This project is a school management system that allows users to manage courses, 
 2. Install dependencies using `npm install`.
 3. Start using  `docker compose up`
 
+## Documentation
+
+1. Generer la doc avec : npm run validate-docs 
+The API documentation can be found at `/api-docs`.
+
 ## Features
 
 - User authentication

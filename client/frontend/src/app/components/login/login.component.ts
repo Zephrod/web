@@ -11,6 +11,7 @@ import { AuthService } from '../../services/auth.service';
 export class LoginComponent {
   credentials = { email: '', password: '' };
   message = '';
+  errorMessage: any;
 
   constructor(
     private authService: AuthService,
@@ -21,8 +22,8 @@ export class LoginComponent {
     this.authService.login(this.credentials).subscribe({
       next: () => this.router.navigate(['/dashboard']),
       error: (err) => {
-        this.message = err.error?.message || 'Erreur de connexion';
-        console.error(err);
+        this.message = err.error?.message || 'Authentication failed';
+        console.error('Login error:', err);
       }
     });
   }

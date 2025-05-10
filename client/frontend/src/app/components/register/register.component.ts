@@ -24,13 +24,13 @@ export class RegisterComponent {
 
   register() {
     this.authService.register(this.credentials).subscribe({
-      next: (res) => {
+      next: () => {
         this.message = 'Registration successful! Redirecting to login...';
         setTimeout(() => {
           this.router.navigate(['/login']);
         }, 2000);
       },
-      error: (err) => {
+      error: (err: { error: { message: string; }; }) => {
         console.error('Registration error:', err);
         this.message = err.error?.message || 'Registration failed';
       }

@@ -1,3 +1,17 @@
+### DOCS: User API Reference
+### Base URL: {{baseUrl}}
+
+### Authentication Required
+// Most endpoints require either:
+// - Cookie: jwt={token} (for browser-based auth)
+// - Authorization: Bearer {token} (for API clients)
+
+### Error Responses
+// Common error formats:
+// 401 Unauthorized: { "message": "Not authenticated" }
+// 403 Forbidden: { "message": "Insufficient privileges" }
+// 404 Not Found: { "message": "User not found" }
+// 500 Server Error: { "message": "Server error", "error": "..." }
 @baseUrl = http://localhost:3000
 
 ### Login (Get JWT)
